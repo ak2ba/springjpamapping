@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -26,8 +28,6 @@ public class Student {
 	String s_name;
 	@Column(name="email")
 	String email;
-	@Column(name="courses")
-	String courses;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="aid",referencedColumnName = "aid")
@@ -35,6 +35,14 @@ public class Student {
 	
 	@OneToMany(mappedBy = "student", cascade=CascadeType.ALL)
 	private List<Subject> subList = new ArrayList<Subject>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name="student_course",
+			joinColumns = @JoinColumn(name="sid"), 
+			inverseJoinColumns = @JoinColumn(name="cid")
+			)
+	private List<Course> courses = new ArrayList<Course>();
 	
 	
 	public Address getAddr() {
@@ -81,31 +89,36 @@ public class Student {
 		this.email = email;
 	}
 
-	public String getCourses() {
+
+	public List<Course> getCourses() {
 		return courses;
 	}
 
-	public void setCourses(String courses) {
+	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
+	
+	
 
-	public Student(int sid, String s_name, String email, String courses, Address addr, List<Subject> subList) {
+	public Student(int sid, String s_name, String email, Address addr, List<Subject> subList, List<Course> courses) {
 		super();
 		this.sid = sid;
 		this.s_name = s_name;
 		this.email = email;
-		this.courses = courses;
 		this.addr = addr;
 		this.subList = subList;
+		this.courses = courses;
 	}
+	
+	
 
-	public Student(String s_name, String email, String courses, Address addr, List<Subject> subList) {
+	public Student(String s_name, String email, Address addr, List<Subject> subList, List<Course> courses) {
 		super();
 		this.s_name = s_name;
 		this.email = email;
-		this.courses = courses;
 		this.addr = addr;
 		this.subList = subList;
+		this.courses = courses;
 	}
 
 	public Student() {

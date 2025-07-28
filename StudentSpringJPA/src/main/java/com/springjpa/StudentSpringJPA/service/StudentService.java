@@ -63,14 +63,6 @@ public class StudentService {
 			else {
 				es.setEmail(es.getEmail());
 			}
-			if(us.getCourses()!=null)
-			{
-				es.setCourses(us.getCourses());
-			}
-			else {
-				es.setCourses(es.getCourses());
-			}
-			
 			if(us.getAddr().getArea()!=null)
 			{
 				es.getAddr().setArea(us.getAddr().getArea());
